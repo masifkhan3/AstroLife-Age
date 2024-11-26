@@ -2,6 +2,7 @@ import streamlit as st
 from datetime import datetime
 import random
 
+
 # Function to determine horoscope based on birthdate
 def get_horoscope(month, day):
     if (month == 12 and day >= 22) or (month == 1 and day <= 19):
@@ -147,11 +148,17 @@ def main():
     if name and birth_date_input:
         today = datetime.today()
 
+birth_date_input = st.date_input("Enter your birthdate:")
+
         # Calculate age
-        birth_date = birth_date_input
-        years = today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
-        months = today.month - birth_date.month - (today.day < birth_date.day)
-        days = today.day - birth_date.day if today.day >= birth_date.day else (today - datetime(today.year, today.month, birth_date.day)).days
+       birth_date_str = st.text_input("Enter your birthdate (YYYY-MM-DD):")
+if birth_date_str:
+    try:
+        birth_date = datetime.strptime(birth_date_str, "%Y-%m-%d")
+        # Proceed with calculations
+    except ValueError:
+        st.error("Please enter the date in the format YYYY-MM-DD.")
+
         
         # Determine the next birthday date
         next_birthday = datetime(today.year + (today.month > birth_date.month or (today.month == birth_date.month and today.day >= birth_date.day)), birth_date.month, birth_date.day)
